@@ -1,4 +1,6 @@
 .idea
+/config.py
+/cogs/blank.py
 
 ### Python template
 # Byte-compiled / optimized / DLL files
@@ -139,5 +141,3 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
-!/config.py
