@@ -16,7 +16,6 @@ class Cum(commands.Cog):
     async def cum(self, ctx, amount: Optional[str]):
         """This command sends the cummies. No number will send a default 1 Cum."""
         emoji = '<:cum:702822392371740684>'
-        print(amount)
         try:
             if amount is None:
                 await ctx.send(str(emoji) * 1)

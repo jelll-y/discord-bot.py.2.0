@@ -45,7 +45,7 @@ class letsGoing(commands.Cog):
 
                     elif self.members[user] == 3:
                         await self.bot.get_channel(payload.channel_id).send(
-                            f'{user.mention} you can no longer vote on this poll.')
+                            f'{user.mention} fuck off and stop pressing the buttons you fucking moron.')
                         self.members[user] = (self.members[user] + 1)
 
                     elif self.members[user] > 3:
@@ -95,6 +95,47 @@ class letsGoing(commands.Cog):
         fields = [("Options", "\n".join([f"{emoji_options[idx]} {option}" for idx, option in enumerate(options)]),
                    False)]
         
+        for name, value, inline in fields:
+            embed.add_field(name=name, value=value, inline=inline)
+        embed.set_footer(text=f"Stopping poll at {later_t}")
+
+        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=749257590520807455).mention}')
+        message = await ctx.send(embed=embed)
+
+        for emoji in emoji_options[:len(options)]:
+            await message.add_reaction(emoji)
+
+        self.polls = list((message.channel.id, message.id))
+        self.members = {}
+        await self.reset_poll(1, message)
+
+    @commands.command()
+    async def lg(self, ctx, *games: Optional[str]):
+        tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
+        later_t = tz_Aus.strftime('%I:%M %p')
+        arg_count = len(games)
+        game_string = ""
+
+        for game in games:
+            game_string += game + " "
+
+        options = ("Yes", "Later", "No")
+        emoji_options = (self.yes, self.later, self.no)
+
+        if arg_count <= 0:
+            embed = discord.Embed(title="Lets Going?",
+                                  description=f"{ctx.author.mention} has asked if you be available for a lets going?",
+                                  colour=r.choice(self.bot.colour_list),
+                                  timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
+        else:
+            game_string = game_string[:-1]
+            embed = discord.Embed(title=f"Lets Going in {game_string}?",
+                                  description=f"{ctx.author.mention} has asked if you be available for a lets going?",
+                                  colour=r.choice(self.bot.colour_list),
+                                  timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
+        fields = [("Options", "\n".join([f"{emoji_options[idx]} {option}" for idx, option in enumerate(options)]),
+                   False)]
+
         for name, value, inline in fields:
             embed.add_field(name=name, value=value, inline=inline)
         embed.set_footer(text=f"Stopping poll at {later_t}")
