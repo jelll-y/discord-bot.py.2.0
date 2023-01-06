@@ -16,6 +16,11 @@ class Faggot(commands.Cog):
         image = os.path.abspath('./images/faggot.jpg')
         await ctx.send(file=discord.File(image))
 
+    @commands.command()
+    async def dsl(self, ctx):
+        image = os.path.abspath('./images/faggot.jpg')
+        await ctx.send(file=discord.File(image))
+
 
 async def setup(bot):
     await bot.add_cog(Faggot(bot))
