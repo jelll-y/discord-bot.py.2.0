@@ -15,7 +15,6 @@ class Random(commands.Cog):
     @commands.command()
     async def r(self, ctx, *option):
         """Will choose a random option from your specified list or from a games list"""
-        print(option)
         if len(option) == 0:
             await ctx.send(f"Provide a few options {r.choice(self.bot.names)}.")
         else:
