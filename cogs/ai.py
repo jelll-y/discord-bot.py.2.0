@@ -29,7 +29,6 @@ class ai(commands.Cog):
             prompt=f"{prompt}",
             n=1,
             size="512x512")
-        print(response)
         await ctx.reply(response.data[0].url)
 
 
