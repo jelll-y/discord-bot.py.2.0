@@ -3,14 +3,15 @@ import random as r
 from datetime import datetime, timedelta
 from typing import Optional
 import discord
+from discord import app_commands
 import pytz
 from discord.ext import commands
 
 
 class letsGoing(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.bot = bot
+        self.lgmention = 749257590520807455
         self.yes = '<:approved:773090431416139777>'
         self.later = '<:maybe:792601596797648926>'
         self.no = '<:disapproved:773090453850423317>'
@@ -68,14 +69,17 @@ class letsGoing(commands.Cog):
                         else:
                             return
 
-    @commands.command()
+    @commands.command(name="letsgoing")
     async def letsgoing(self, ctx, *games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
         arg_count = len(games)
+        print(f'{games} games')
+        print(f'{arg_count} arg count')
         game_string = ""
 
         for game in games:
+            print(f'{game} game')
             game_string += game + " "
 
         options = ("Yes", "Later", "No")
@@ -99,7 +103,7 @@ class letsGoing(commands.Cog):
             embed.add_field(name=name, value=value, inline=inline)
         embed.set_footer(text=f"Stopping poll at {later_t}")
 
-        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=749257590520807455).mention}')
+        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=self.lgmention).mention}')
         message = await ctx.send(embed=embed)
 
         for emoji in emoji_options[:len(options)]:
@@ -109,7 +113,7 @@ class letsGoing(commands.Cog):
         self.members = {}
         await self.reset_poll(1, message)
 
-    @commands.command()
+    @commands.command(name="lg")
     async def lg(self, ctx, *games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
@@ -117,7 +121,7 @@ class letsGoing(commands.Cog):
         game_string = ""
 
         for game in games:
-            game_string += game + " "
+            game_string += game + ""
 
         options = ("Yes", "Later", "No")
         emoji_options = (self.yes, self.later, self.no)
@@ -140,7 +144,7 @@ class letsGoing(commands.Cog):
             embed.add_field(name=name, value=value, inline=inline)
         embed.set_footer(text=f"Stopping poll at {later_t}")
 
-        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=749257590520807455).mention}')
+        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=self.lgmention).mention}')
         message = await ctx.send(embed=embed)
 
         for emoji in emoji_options[:len(options)]:

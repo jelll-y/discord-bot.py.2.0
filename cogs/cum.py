@@ -5,14 +5,14 @@ from typing import Optional
 
 
 class Cum(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
         print('Cum command is loaded')
 
-    @commands.command()
+    @commands.hybrid_command(name="cum")
     async def cum(self, ctx, amount: Optional[str]):
         """This command sends the cummies. No number will send a default 1 Cum."""
         emoji = '<:cum:702822392371740684>'

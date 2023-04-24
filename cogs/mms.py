@@ -6,15 +6,15 @@ import random as r
 
 
 class Mms(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
         print('MMS command is loaded')
 
-    @commands.command()
-    async def mms(self, ctx, value: Optional[str] = None):
+    @commands.hybrid_command(name="mms")
+    async def mms(self, ctx: commands.Context, value: Optional[str]):
         try:
             if value is None:
                 mms_img = os.path.abspath('.//mms/mms0.png')
