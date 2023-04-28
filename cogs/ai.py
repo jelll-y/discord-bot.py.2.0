@@ -19,7 +19,7 @@ class ai(commands.Cog):
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"{prompt}",
-            max_tokens=100,
+            max_tokens=500,
             temperature=0.5)
         await ctx.reply(response.choices[0].text)
 
