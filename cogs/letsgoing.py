@@ -11,7 +11,7 @@ from discord.ext import commands
 class letsGoing(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.lgmention = 749257590520807455
+        self.lgmention = 828590358991470628
         self.yes = '<:approved:773090431416139777>'
         self.later = '<:maybe:792601596797648926>'
         self.no = '<:disapproved:773090453850423317>'
@@ -74,12 +74,9 @@ class letsGoing(commands.Cog):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
         arg_count = len(games)
-        print(f'{games} games')
-        print(f'{arg_count} arg count')
         game_string = ""
 
         for game in games:
-            print(f'{game} game')
             game_string += game + " "
 
         options = ("Yes", "Later", "No")
@@ -121,7 +118,7 @@ class letsGoing(commands.Cog):
         game_string = ""
 
         for game in games:
-            game_string += game + ""
+            game_string += game + " "
 
         options = ("Yes", "Later", "No")
         emoji_options = (self.yes, self.later, self.no)
