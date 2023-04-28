@@ -11,7 +11,7 @@ from discord.ext import commands
 class letsGoing(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.lgmention = 828590358991470628
+        self.lgmention = 749257590520807455
         self.yes = '<:approved:773090431416139777>'
         self.later = '<:maybe:792601596797648926>'
         self.no = '<:disapproved:773090453850423317>'
