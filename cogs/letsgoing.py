@@ -46,7 +46,8 @@ class letsGoing(commands.Cog):
 
                     elif self.members[user] == 3:
                         await self.bot.get_channel(payload.channel_id).send(
-                            f'{user.mention} fuck off and stop pressing the buttons you fucking moron.')
+                            f'{user.mention} fuck off and stop pressing the '
+                            f'buttons you fucking {r.choice(self.bot.names)}.')
                         self.members[user] = (self.members[user] + 1)
 
                     elif self.members[user] > 3:
@@ -69,7 +70,7 @@ class letsGoing(commands.Cog):
                         else:
                             return
 
-    @commands.command(name="letsgoing")
+    @commands.hybrid_command(name="letsgoing")
     async def letsgoing(self, ctx, *games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
@@ -110,7 +111,7 @@ class letsGoing(commands.Cog):
         self.members = {}
         await self.reset_poll(1, message)
 
-    @commands.command(name="lg")
+    @commands.hybrid_command(name="lg")
     async def lg(self, ctx, *games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')

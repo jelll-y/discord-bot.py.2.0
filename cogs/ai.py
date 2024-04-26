@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
-import openai
+from openai import OpenAI
 import config
-openai.org = config.ORG_ID
-openai.api_key = config.API_KEY
+
+client = OpenAI(api_key=config.API_KEY)
 
 
 class ai(commands.Cog):
@@ -16,20 +16,25 @@ class ai(commands.Cog):
 
     @commands.command()
     async def ai(self, ctx: commands.Context, *, prompt: str):
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=f"{prompt}",
-            max_tokens=500,
-            temperature=0.5)
-        await ctx.reply(response.choices[0].text)
+        print(f"{prompt}")
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                # Edit the system
+                {"role": 'system', 'content': 'You are a sassy australian that loves swearing during your responses.'},
+                {"role": "user", "content": f"{prompt}"}
+            ]
+        )
+        print(response.choices[0].message.content)
+        # await ctx.reply(response.choices[0].message.content)
 
-    @commands.command()
+    '''@commands.command()
     async def image(self, ctx: commands.Context, *, prompt: str):
         response = openai.Image.create(
             prompt=f"{prompt}",
             n=1,
             size="512x512")
-        await ctx.reply(response.data[0].url)
+        await ctx.reply(response.data[0].url)'''
 
 
 async def setup(bot):

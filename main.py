@@ -7,7 +7,7 @@ from discord.ext import commands
 intents = discord.Intents.all()
 intents.message_content = True
 bot = commands.Bot(command_prefix='.', intents=intents)
-bot.names = ['squirt', 'champ', 'sport', 'cob', 'cobsta', 'bucko']
+bot.names = ['squirt', 'champ', 'sport', 'cob', 'cobsta', 'bucko', 'fucktard', 'cunt', 'cock eater', 'kid fucker']
 bot.colours = {
     'WHITE': 0xFFFFFF,
     'AQUA': 0x1ABC9C,
