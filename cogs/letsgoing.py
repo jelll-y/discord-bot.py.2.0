@@ -1,11 +1,12 @@
 import asyncio
-import random as r
 from datetime import datetime, timedelta
 from typing import Optional
+
 import discord
-from discord import app_commands
 import pytz
 from discord.ext import commands
+
+import random as r
 
 
 class letsGoing(commands.Cog):
@@ -70,15 +71,17 @@ class letsGoing(commands.Cog):
                         else:
                             return
 
-    @commands.hybrid_command(name="letsgoing")
-    async def letsgoing(self, ctx, *games: Optional[str]):
+    @commands.hybrid_command(
+        name="letsgoing",
+        description="Runs the lets going command.")
+    async def letsgoing(self, ctx: commands.Context, *, games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
         arg_count = len(games)
-        game_string = ""
+        game_string = games
 
-        for game in games:
-            game_string += game + " "
+        '''for game in games:
+            game_string += game + " "'''
 
         options = ("Yes", "Later", "No")
         emoji_options = (self.yes, self.later, self.no)
@@ -89,7 +92,7 @@ class letsGoing(commands.Cog):
                                   colour=r.choice(self.bot.colour_list),
                                   timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
         else:
-            game_string = game_string[:-1]
+            # game_string = game_string[:-1]
             embed = discord.Embed(title=f"Lets Going in {game_string}?",
                                   description=f"{ctx.author.mention} has asked if you be available for a lets going?",
                                   colour=r.choice(self.bot.colour_list),
@@ -111,15 +114,17 @@ class letsGoing(commands.Cog):
         self.members = {}
         await self.reset_poll(1, message)
 
-    @commands.hybrid_command(name="lg")
-    async def lg(self, ctx, *games: Optional[str]):
+    @commands.hybrid_command(
+        name="lg",
+        description="Runs the lets going command.")
+    async def lg(self, ctx: commands.Context, *, games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
         arg_count = len(games)
-        game_string = ""
+        game_string = games
 
-        for game in games:
-            game_string += game + " "
+        '''for game in games:
+            game_string += game'''
 
         options = ("Yes", "Later", "No")
         emoji_options = (self.yes, self.later, self.no)
@@ -130,7 +135,7 @@ class letsGoing(commands.Cog):
                                   colour=r.choice(self.bot.colour_list),
                                   timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
         else:
-            game_string = game_string[:-1]
+            # game_string = game_string[:-1]
             embed = discord.Embed(title=f"Lets Going in {game_string}?",
                                   description=f"{ctx.author.mention} has asked if you be available for a lets going?",
                                   colour=r.choice(self.bot.colour_list),
