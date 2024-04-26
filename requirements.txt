@@ -1,0 +1,6 @@
+openai~=1.23.6
+requests~=2.31.0
+pytz~=2024.1
+discord.py==2.3.2
+ipython~=8.24.0
+google-generativeai==0.5.2
