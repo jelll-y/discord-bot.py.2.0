@@ -117,7 +117,7 @@ class letsGoing(commands.Cog):
     @commands.hybrid_command(
         name="lg",
         description="Runs the lets going command.")
-    async def lg(self, ctx: commands.Context, *, games: Optional[str]):
+    async def lg(self, ctx, *games: Optional[str]):
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
         arg_count = len(games)

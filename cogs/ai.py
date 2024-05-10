@@ -54,7 +54,9 @@ class ai(commands.Cog):
     async def on_ready(self):
         print('AI commands are loaded')
 
-    @commands.command()
+    @commands.hybrid_command(
+        name="ai",
+        description="Uses Google Gemini AI to provide responses.")
     async def ai(self, ctx: commands.Context, *, prompt: str):
         # noinspection PyTypeChecker
         model = genai.GenerativeModel(model_name="gemini-1.0-pro",
