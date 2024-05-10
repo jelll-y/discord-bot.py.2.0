@@ -71,7 +71,7 @@ class letsGoing(commands.Cog):
                         else:
                             return
 
-    @commands.hybrid_command(
+    @commands.command(
         name="letsgoing",
         description="Runs the lets going command.")
     async def letsgoing(self, ctx: commands.Context, *, games: Optional[str]):
@@ -114,7 +114,7 @@ class letsGoing(commands.Cog):
         self.members = {}
         await self.reset_poll(1, message)
 
-    @commands.hybrid_command(
+    @commands.command(
         name="lg",
         description="Runs the lets going command.")
     async def lg(self, ctx, *games: Optional[str]):
