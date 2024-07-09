@@ -4,9 +4,9 @@ import asyncio
 import os
 from discord.ext import commands
 
-intents = discord.Intents.all()
-intents.message_content = True
-bot = commands.Bot(command_prefix='.', intents=intents)
+intents = discord.Intents.default()
+# intents.message_content = False
+bot = commands.Bot(command_prefix=commands.when_mentioned, intents=intents)
 bot.names = ['squirt', 'champ', 'sport', 'cob', 'cobsta', 'bucko', 'fucktard', 'cunt', 'cock eater', 'kid fucker']
 bot.colours = {
     'WHITE': 0xFFFFFF,
@@ -40,10 +40,11 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
-    if message[0] == '.':
+    if not (message.content.split(' ', 1)[0]) == (f'<@{bot.user.id}>'):
         return
-    if message.author == bot.user:
+    if message.author.id == bot.user.id:
         return
+    await bot.process_commands(message.content)
 
 
 async def load():
@@ -54,7 +55,7 @@ async def load():
 
 async def main():
     await load()
-    await bot.start(config.TOKEN)
+    await bot.start(config.TOKEN, reconnect=True)
 
 
 asyncio.run(main())

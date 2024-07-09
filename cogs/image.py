@@ -10,6 +10,11 @@ from IPython.display import Markdown
 
 import config
 
+import requests
+from PIL import Image
+import openai
+
+openai.api_key = config.CHATGPT_API
 api_key = config.GOOGLE_API
 genai.configure(api_key=api_key)
 
@@ -46,6 +51,15 @@ def to_markdown(text):
     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 
+def generate(text):
+    res = openai.Image.create(
+        prompt=text,
+        n=1,
+        size="512x512",
+    )
+    return res["data"][0]["url"]
+
+
 class ai(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -64,6 +78,18 @@ class ai(commands.Cog):
                                       safety_settings=safety_settings)
         response = model.generate_content(f'{prompt}')
         await ctx.reply(response.text)
+
+    @commands.hybrid_command(
+        name='image',
+        description="Uses ChatGPT AI for image generation.")
+    async def image(self, ctx: commands.Context, *, prompt: str):
+        text = prompt
+        print(text)
+        url1 = generate(text)
+        print(url1)
+        response = requests.get(url1)
+        print(response)
+        await ctx.reply(response.raw)
 
 
 async def setup(bot):
