@@ -12,9 +12,12 @@ class Random(commands.Cog):
     async def on_ready(self):
         print('Random command is loaded')
 
-    @commands.command()
+    @commands.hybrid_command(
+        name="r",
+        description="Will choose a random option from your specified list."
+    )
     async def r(self, ctx, *option):
-        """Will choose a random option from your specified list or from a games list"""
+        """Will choose a random option from your specified list"""
         if len(option) == 0:
             await ctx.send(f"Provide a few options {r.choice(self.bot.names)}.")
         else:
