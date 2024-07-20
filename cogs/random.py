@@ -13,14 +13,15 @@ class Random(commands.Cog):
         print('Random command is loaded')
 
     @commands.hybrid_command(
-        name="random",
+        name="r",
         description="Will choose a random option from your specified list."
     )
     async def r(self, ctx: commands.Context, *, option: str):
         if len(option) == 0:
             await ctx.send(f"Provide a few options {r.choice(self.bot.names)}.")
         else:
-            options = ' '.join(option)
+            print(option)
+            options = ''.join(option)
             choice_list = options.split(', ')
             choice = r.choice(choice_list)
             if choice == 'kfc':
