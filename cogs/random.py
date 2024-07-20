@@ -30,9 +30,8 @@ class Random(commands.Cog):
                 await ctx.send('https://tenor.com/view/good-yes-mcdonalds-mcdo-thumbs-up-gif-16886848')
             else:
                 await ctx.send(f'{choice}')
-                
-    
-    @commands.command(
+
+    @commands.comamnd(
         name="r",
         description="Will choose a random option from your specified list."
     )
@@ -50,7 +49,6 @@ class Random(commands.Cog):
                 await ctx.send('https://tenor.com/view/good-yes-mcdonalds-mcdo-thumbs-up-gif-16886848')
             else:
                 await ctx.send(f'{choice}')
-
 
 async def setup(bot):
     await bot.add_cog(Random(bot))
