@@ -31,7 +31,7 @@ class Random(commands.Cog):
             else:
                 await ctx.send(f'{choice}')
 
-    @commands.comamnd(
+    @commands.command(
         name="r",
         description="Will choose a random option from your specified list."
     )
