@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime, timedelta
 from typing import Optional
+import sys
 
 import discord
 import pytz
@@ -19,7 +20,8 @@ class letsGoing(commands.Cog):
         self.polls = []
         self.members = {}
 
-    async def reset_poll(self, hours, message):
+    async def reset_poll(self, message):
+        hours = self.bot.lets_going_timer
         await asyncio.sleep(hours * 3600)
         await message.edit(
             embed=discord.Embed(title="Lets Going?",
@@ -112,7 +114,7 @@ class letsGoing(commands.Cog):
 
         self.polls = list((message.channel.id, message.id))
         self.members = {}
-        await self.reset_poll(1, message)
+        await self.reset_poll(message)
 
     @commands.command(
         name="lg",
@@ -155,8 +157,27 @@ class letsGoing(commands.Cog):
 
         self.polls = list((message.channel.id, message.id))
         self.members = {}
-        await self.reset_poll(1, message)
-
+        await self.reset_poll(message)
+        
+    @commands.command(
+        name="lgtimer",
+        description="Sets the timer for the lets going command.")
+    @commands.is_owner()
+    async def lgtimer(self, ctx, amount: Optional[int]):
+        await ctx.send(f'Timer has been set to {amount}')
+        self.bot.lets_going_timer = amount
+        try:
+            if amount is None:
+                await ctx.send(f'Timer has been set to 1 hour.')
+                self.bot.lets_going_timer = amount
+            elif int(amount) <= 100:
+                await ctx.send(f'Timer has been set to {amount} hours.')
+                self.bot.lets_going_timer = amount
+        except ValueError:
+            await ctx.send(f"Try using a number next time bucko")
+        except:
+            await ctx.send(f'Inform Harris that you are fucking retarded and to tell him this: {sys.exc_info()}')
+        
 
 async def setup(bot):
     await bot.add_cog(letsGoing(bot))

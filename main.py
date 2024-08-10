@@ -30,6 +30,7 @@ bot.colours = {
     'DARK_NAVY': 0x2C3E50
 }
 bot.colour_list = [c for c in bot.colours.values()]
+bot.lets_going_timer = 6
 
 
 @bot.event
