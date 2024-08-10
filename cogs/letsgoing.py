@@ -164,8 +164,6 @@ class letsGoing(commands.Cog):
         description="Sets the timer for the lets going command.")
     @commands.is_owner()
     async def lgtimer(self, ctx, amount: Optional[int]):
-        await ctx.send(f'Timer has been set to {amount}')
-        self.bot.lets_going_timer = amount
         try:
             if amount is None:
                 await ctx.send(f'Timer has been set to 1 hour.')
