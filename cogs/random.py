@@ -16,7 +16,7 @@ class Random(commands.Cog):
         name="random",
         description="Will choose a random option from your specified list."
     )
-    async def random(self, ctx: commands.Context, *, option: str):
+    async def random(self, ctx: commands.Context, *, option):
         if len(option) == 0:
             await ctx.send(f"Provide a few options {r.choice(self.bot.names)}.")
         else:
@@ -34,7 +34,7 @@ class Random(commands.Cog):
         name="r",
         description="Will choose a random option from your specified list."
     )
-    async def r(self, ctx: commands.Context, *, option: str):
+    async def r(self, ctx: commands.Context, *, option):
         if len(option) == 0:
             await ctx.send(f"Provide a few options {r.choice(self.bot.names)}.")
         else:

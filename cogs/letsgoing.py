@@ -13,16 +13,15 @@ import random as r
 class letsGoing(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.lgmention = 749257590520807455
+        self.lgmention = 828590358991470628
         self.yes = '<:approved:773090431416139777>'
         self.later = '<:maybe:792601596797648926>'
         self.no = '<:disapproved:773090453850423317>'
         self.polls = []
         self.members = {}
+        self.embedmessage = ""
 
     async def reset_poll(self, message):
-        hours = self.bot.lets_going_timer
-        await asyncio.sleep(hours * 3600)
         await message.edit(
             embed=discord.Embed(title="Lets Going?",
                                 description=f"This poll is over.",
@@ -31,6 +30,62 @@ class letsGoing(commands.Cog):
                                 ))
         self.polls = []
         self.members = {}
+        
+    async def reset(self, message):
+        print('reset cancel start')
+        hours = self.bot.lets_going_timer
+        try:
+            print('reset sleeping')
+            await asyncio.sleep(hours * 3600)
+        except asyncio.CancelledError:
+            await self.reset_poll(message)
+            pass
+        finally:
+            await self.reset_poll(message)
+        
+    async def lets_going(self, ctx, games):
+        print('Lets going routine')
+        task = asyncio.create_task(self.reset)
+        print('post task & pre embed creation')
+        tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
+        later_t = tz_Aus.strftime('%I:%M %p')
+        arg_count = len(games)
+        game_string = games
+
+        '''for game in games:
+            game_string += game'''
+
+        options = ("Yes", "Later", "No")
+        emoji_options = (self.yes, self.later, self.no)
+
+        if arg_count <= 0:
+            embed = discord.Embed(title="Lets Going?",
+                                  description=f"{ctx.author.mention} has asked if you be available for a lets going?",
+                                  colour=r.choice(self.bot.colour_list),
+                                  timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
+        else:
+            # game_string = game_string[:-1]
+            embed = discord.Embed(title=f"Lets Going in {game_string}?",
+                                  description=f"{ctx.author.mention} has asked if you be available for a lets going?",
+                                  colour=r.choice(self.bot.colour_list),
+                                  timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
+        fields = [("Options", "\n".join([f"{emoji_options[idx]} {option}" for idx, option in enumerate(options)]),
+                   False)]
+
+        for name, value, inline in fields:
+            embed.add_field(name=name, value=value, inline=inline)
+        embed.set_footer(text=f"Stopping poll at {later_t}")
+
+        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=self.lgmention).mention}')
+        message = await ctx.send(embed=embed)
+
+        for emoji in emoji_options[:len(options)]:
+            await message.add_reaction(emoji)
+
+        self.polls = list((message.channel.id, message.id))
+        self.members = {}
+        await task
+                
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -77,49 +132,24 @@ class letsGoing(commands.Cog):
         name="letsgoing",
         description="Runs the lets going command.")
     async def letsgoing(self, ctx: commands.Context, *, games: Optional[str]):
-        tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
-        later_t = tz_Aus.strftime('%I:%M %p')
-        arg_count = len(games)
-        game_string = games
-
-        '''for game in games:
-            game_string += game + " "'''
-
-        options = ("Yes", "Later", "No")
-        emoji_options = (self.yes, self.later, self.no)
-
-        if arg_count <= 0:
-            embed = discord.Embed(title="Lets Going?",
-                                  description=f"{ctx.author.mention} has asked if you be available for a lets going?",
-                                  colour=r.choice(self.bot.colour_list),
-                                  timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
-        else:
-            # game_string = game_string[:-1]
-            embed = discord.Embed(title=f"Lets Going in {game_string}?",
-                                  description=f"{ctx.author.mention} has asked if you be available for a lets going?",
-                                  colour=r.choice(self.bot.colour_list),
-                                  timestamp=datetime.now(pytz.timezone('Australia/Sydney')))
-        fields = [("Options", "\n".join([f"{emoji_options[idx]} {option}" for idx, option in enumerate(options)]),
-                   False)]
-        
-        for name, value, inline in fields:
-            embed.add_field(name=name, value=value, inline=inline)
-        embed.set_footer(text=f"Stopping poll at {later_t}")
-
-        await ctx.send(f'{discord.utils.get(ctx.guild.roles, id=self.lgmention).mention}')
-        message = await ctx.send(embed=embed)
-
-        for emoji in emoji_options[:len(options)]:
-            await message.add_reaction(emoji)
-
-        self.polls = list((message.channel.id, message.id))
-        self.members = {}
-        await self.reset_poll(message)
+        await self.lets_going(self, ctx, games)
 
     @commands.command(
         name="lg",
         description="Runs the lets going command.")
-    async def lg(self, ctx, *games: Optional[str]):
+    async def lg(self, ctx: commands.Context, *, games: Optional[str]):
+        await self.lets_going(self, ctx, games)
+        """print('lg command registered')
+        task = asyncio.create_task(self.reset())
+        if self.polls == []:
+            pass
+        else:
+            try:
+                await task.cancel()
+            except Exception as e:
+                print(f"{e}")                
+
+        print('pre embed creation')
         tz_Aus = datetime.now(pytz.timezone('Australia/Sydney')) + timedelta(hours=1)
         later_t = tz_Aus.strftime('%I:%M %p')
         arg_count = len(games)
@@ -156,19 +186,17 @@ class letsGoing(commands.Cog):
             await message.add_reaction(emoji)
 
         self.polls = list((message.channel.id, message.id))
-        self.members = {}
-        await self.reset_poll(message)
-        
+        self.members = {}"""
+    
     @commands.command(
         name="lgtimer",
         description="Sets the timer for the lets going command.")
-    @commands.is_owner()
     async def lgtimer(self, ctx, amount: Optional[int]):
         try:
             if amount is None:
                 await ctx.send(f'Timer has been set to 1 hour.')
                 self.bot.lets_going_timer = amount
-            elif int(amount) <= 100:
+            elif amount == int:
                 await ctx.send(f'Timer has been set to {amount} hours.')
                 self.bot.lets_going_timer = amount
         except ValueError:
