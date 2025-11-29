@@ -48,5 +48,6 @@ class Random(commands.Cog):
             else:
                 await ctx.send(f'{choice}')
 
+
 async def setup(bot):
     await bot.add_cog(Random(bot))
